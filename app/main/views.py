@@ -1,4 +1,6 @@
 import re
+from time import strftime
+
 import markdown
 import requests
 from datetime import datetime, timedelta
@@ -43,7 +45,7 @@ def login_up():
         username = registerForm.username.data
         user = User.query.filter_by(user_name=username).first()
         if user:
-            flask('用户名已存在')
+            flash('用户名已存在')
         email = registerForm.email.data
         passwd1 = registerForm.password.data
         passwd2 = registerForm.password2.data
@@ -121,11 +123,11 @@ def add_task():
 @main.route('/del_task/<task_id>/')
 @login_required
 def del_task(task_id):
-    task = Task().query.filter_by(task_id=taskid).first()
+    task = Task().query.filter_by(task_id = task_id).first()
     db.session.delete(task)
     db.session.commit()
     print('del task finished')
-    tasks = Task().query.filter_by(user_id=user_id).all()
+    tasks = Task().query.filter_by(user_id = user_id).all()
     return render_template('manage_task.html', tasks=tasks)
 
 
